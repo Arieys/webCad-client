@@ -1,0 +1,81 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+//option java_multiple_files = true;
+//option java_package = "io.grpc.examples.helloworld";
+//option java_outer_classname = "HelloWorldProto";
+//option objc_class_prefix = "HLW";
+
+package helloworld;
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+
+  rpc CreateBlock(CreateBlockRequest) returns (CreatePrimitiveReply){}
+  rpc CreateCone(CreateConeRequest) returns (CreatePrimitiveReply){}
+  rpc CreateSphere(CreateSphereRequest) returns (CreatePrimitiveReply){}
+  rpc CreateCylinder(CreateCylinderRequest) returns (CreatePrimitiveReply){}
+  rpc CreateTorus(CreateTorusRequest) returns (CreatePrimitiveReply){}
+  rpc CreatePrism(CreatePrismRequest) returns (CreatePrimitiveReply){}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+
+message CreateBlockRequest{
+	double xsize = 1;
+	double ysize = 2;
+	double zsize = 3;
+}
+
+message CreateConeRequest{
+	double radius = 1;
+	double height = 2;
+	double semiAngle = 3;
+}
+
+message CreateSphereRequest{
+	double radius = 1;
+}
+
+message CreateCylinderRequest{
+	double radius = 1;
+	double height = 2;
+}
+
+message CreateTorusRequest{
+	double major_radius = 1;
+	double minor_radius = 2;
+}
+
+message CreatePrismRequest{
+	double radius = 1;
+	double height = 2;
+	int32 nSide = 3;
+}
+
+message CreatePrimitiveReply{
+	repeated double faceVertices = 1;
+	repeated double lineStrip = 2;
+}
