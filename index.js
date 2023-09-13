@@ -59,4 +59,18 @@ app.get('/', function (req, res) {
   });
 });
 
+app.post('/execute-function', (req, res) => {
+    console.log(req.url);
+    // 执行后端函数的代码
+    // ...  
+    client.createBlock({ xsize: 1.2, ysize: 2.1, zsize: 1.7 }, function (err, response) {
+        if (err) {
+            console.error('Error: ', err)
+        } else {
+            res.json({ mesh_data: response.faceVertices});
+            console.log(response.faceVertices)
+        }
+    })
+});  
+
 app.listen(3000);

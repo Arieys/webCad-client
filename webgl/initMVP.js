@@ -37,6 +37,8 @@ function initMVP(gl, positionData) {
     const projectionMatrix = mat4.create();
     mat4.perspective(projectionMatrix, fieldOfViewRadians, aspect, zNear, zFar);
 
+    
+
     const viewMatrix = mat4.create();
     mat4.translate(
         viewMatrix,
@@ -52,4 +54,30 @@ function initMVP(gl, positionData) {
     }
 }
 
-export { initMVP }
+function initSimpleMVP(gl) {
+    const modelMatrix = mat4.create();
+
+    const zNear = 0.1;
+    const zFar = 1000;
+    const fieldOfViewRadians = 45 * Math.PI / 180;
+    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const projectionMatrix = mat4.create();
+    mat4.perspective(projectionMatrix, fieldOfViewRadians, aspect, zNear, zFar);
+
+
+    const viewMatrix = mat4.create();
+    mat4.translate(
+        viewMatrix,
+        viewMatrix,
+        [0, 0, -5]
+    );
+
+    return {
+        modelMatrix: modelMatrix,
+        viewMatrix: viewMatrix,
+        projectionMatrix: projectionMatrix,
+        cameraZPosition: 5
+    }
+}
+
+export { initMVP, initSimpleMVP }

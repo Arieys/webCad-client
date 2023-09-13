@@ -1,6 +1,6 @@
 import { initPositionBuffer, initColornBuffer, initNormalBuffer } from "./initBuffer.js";
 import { drawObject } from "./drawObject.js";
-import { initMVP } from "./initMVP.js";
+import { initSimpleMVP } from "./initMVP.js";
 import { createCamera, getViewMatrix, processMouseMovement } from "./camera.js";
 import { parseData } from "./parseData.js";
 
@@ -19,90 +19,7 @@ let model = {
   normal: [],
   face: []
 };
-let positionData = [
-    -0.5, -0.5, -0.5, 
-    0.5, -0.5, -0.5, 
-    0.5, 0.5, -0.5, 
-    0.5, 0.5, -0.5, 
-    -0.5, 0.5, -0.5, 
-    -0.5, -0.5, -0.5, 
-
-    -0.5, -0.5, 0.5, 
-    0.5, -0.5, 0.5, 
-    0.5, 0.5, 0.5, 
-    0.5, 0.5, 0.5, 
-    -0.5, 0.5, 0.5, 
-    -0.5, -0.5, 0.5, 
-
-    -0.5, 0.5, 0.5, 
-    -0.5, 0.5, -0.5, 
-    -0.5, -0.5, -0.5, 
-    -0.5, -0.5, -0.5, 
-    -0.5, -0.5, 0.5, 
-    -0.5, 0.5, 0.5, 
-
-    0.5, 0.5, 0.5, 
-    0.5, 0.5, -0.5, 
-    0.5, -0.5, -0.5, 
-    0.5, -0.5, -0.5, 
-    0.5, -0.5, 0.5, 
-    0.5, 0.5, 0.5, 
-
-    -0.5, -0.5, -0.5, 
-    0.5, -0.5, -0.5, 
-    0.5, -0.5, 0.5, 
-    0.5, -0.5, 0.5, 
-    -0.5, -0.5, 0.5,
-    -0.5, -0.5, -0.5, 
-
-    -0.5, 0.5, -0.5, 
-    0.5, 0.5, -0.5, 
-    0.5, 0.5, 0.5, 
-    0.5, 0.5, 0.5, 
-    -0.5, 0.5, 0.5, 
-    -0.5, 0.5, -0.5],
-    normalData = [
-        0.0, 0.0, -1.0,
-        0.0, 0.0, -1.0,
-        0.0, 0.0, -1.0,
-        0.0, 0.0, -1.0,
-        0.0, 0.0, -1.0,
-        0.0, 0.0, -1.0,
-
-        0.0, 0.0, 1.0,
-        0.0, 0.0, 1.0,
-        0.0, 0.0, 1.0,
-        0.0, 0.0, 1.0,
-        0.0, 0.0, 1.0,
-        0.0, 0.0, 1.0,
-
-        -1.0, 0.0, 0.0,
-        -1.0, 0.0, 0.0,
-        -1.0, 0.0, 0.0,
-        -1.0, 0.0, 0.0,
-        -1.0, 0.0, 0.0,
-        -1.0, 0.0, 0.0,
-
-        1.0, 0.0, 0.0,
-        1.0, 0.0, 0.0,
-        1.0, 0.0, 0.0,
-        1.0, 0.0, 0.0,
-        1.0, 0.0, 0.0,
-        1.0, 0.0, 0.0,
-
-        0.0, -1.0, 0.0,
-        0.0, -1.0, 0.0,
-        0.0, -1.0, 0.0,
-        0.0, -1.0, 0.0,
-        0.0, -1.0, 0.0,
-        0.0, -1.0, 0.0,
-
-        0.0, 1.0, 0.0,
-        0.0, 1.0, 0.0,
-        0.0, 1.0, 0.0,
-        0.0, 1.0, 0.0,
-        0.0, 1.0, 0.0,
-        0.0, 1.0, 0.0];
+let positionData = [],normalData = [];
 
 const vsSource = `
     attribute vec4 aVertexPosition;
@@ -162,7 +79,7 @@ function main() {
     var start = new Date();
     console.log(start);
 
-    var initialMVP = initMVP(gl, positionData);
+    var initialMVP = initSimpleMVP(gl);
     MVP = {
     modelMatrix: initialMVP.modelMatrix,
     viewMatrix: initialMVP.viewMatrix,
@@ -175,7 +92,27 @@ function main() {
     const getData_btn = document.getElementById("getData");
     getData_btn.addEventListener("click", e => {
 
-      console.log("on getData btn click");
+        console.log("on getData btn click");
+
+        // 发送请求到后端的路由  
+        fetch('/execute-function', {
+            method: 'POST', // 或者使用 GET 方法  
+        })
+        .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                const parsedData = parseData(data.mesh_data);
+                positionData = parsedData.positionData
+                normalData = parsedData.normalData
+                console.log(positionData)
+                console.log(normalData)
+            // 处理从后端返回的数据  
+            // ...  
+        })
+        .catch(error => {
+            // 处理错误  
+            // ...  
+        });  
   });
 
   //设置鼠标事件监听
@@ -205,7 +142,7 @@ function main() {
   }
 
   //设置键盘事件监听
-  document.onkeypress = function (event) {
+    document.onkeypress = function (event) {
     if (event.key == "w") {
       camera.position = [camera.position[0] + camera.front[0] * speed, camera.position[1] + camera.front[1] * speed, camera.position[2] + camera.front[2] * speed];
       MVP.viewMatrix = getViewMatrix(camera);
