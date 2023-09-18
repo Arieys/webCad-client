@@ -18,15 +18,23 @@
     <div class="container">
 
       <div class="canvas-container">
-        <canvas id="glcanvas" width="1920" height="1280"></canvas>
+        <canvas id="glcanvas" width="1280" height="720"></canvas>
       </div>
 
       <div class="transform-container">
         <div class="button-row">
-          <button id="getData">getData</button>
-          <button id="render">render</button>
+          <button id="createBlock">createBlcok</button>
+          <input type="number" name="block_x" id="block_x" placeholder="Enter x size">  
+          <input type="number" name="block_y" id="block_y" placeholder="Enter y size">  
+          <input type="number" name="block_z" id="block_z" placeholder="Enter z size">
+        </div><br>
+        <div class="button-row">
+          <button id="createPrism">createPrism</button>
+          <input type="number" name="p_x" id="p_x" placeholder="Enter x size">  
+          <input type="number" name="p_y" id="p_y" placeholder="Enter y size">  
+          <input type="number" name="p_z" id="p_z" placeholder="Enter z size">
         </div>
-      </div>
+      </div>          
     </div>
   </body>
 </html>

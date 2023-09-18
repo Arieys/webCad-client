@@ -88,15 +88,31 @@ function main() {
     camera = createCamera(0.0, 0.0, initialMVP.cameraZPosition);
   
 
-  //平移按钮监听
-    const getData_btn = document.getElementById("getData");
+  //创建entity按钮监听
+    const getData_btn = document.getElementById("createBlock");
     getData_btn.addEventListener("click", e => {
 
         console.log("on getData btn click");
+        var x = document.getElementById('block_x').value;
+        var y = document.getElementById('block_y').value;  
+        var z = document.getElementById('block_z').value;  
+
+
+        const data = {
+            x: x,
+            y: y,
+            z: z
+        };  
+
+        console.log(x,y,z);
 
         // 发送请求到后端的路由  
         fetch('/execute-function', {
             method: 'POST', // 或者使用 GET 方法  
+            headers: {
+                'Content-Type': 'application/json'
+            },  
+            body: JSON.stringify(data)
         })
         .then(response => response.json())
             .then(data => {

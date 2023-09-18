@@ -59,18 +59,24 @@ app.get('/', function (req, res) {
   });
 });
 
+app.use(express.json());
+
 app.post('/execute-function', (req, res) => {
-    console.log(req.url);
-    // 执行后端函数的代码
-    // ...  
-    client.createBlock({ xsize: 1.2, ysize: 2.1, zsize: 1.7 }, function (err, response) {
-        if (err) {
-            console.error('Error: ', err)
-        } else {
-            res.json({ mesh_data: response.faceVertices});
-            console.log(response.faceVertices)
-        }
-    })
+
+    // input parameter not empty
+    if (req.body.x != "" && req.body.y != "" && req.body.z != "") {
+        client.createBlock({ xsize: req.body.x, ysize: req.body.y, zsize: req.body.z }, function (err, response) {
+            if (err) {
+                console.error('Error: ', err)
+            } else {
+                res.json({ mesh_data: response.faceVertices });
+            }
+        })
+    }
+    else {
+        console.log("input empty");
+    }
+
 });  
 
 app.listen(3000);
