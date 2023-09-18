@@ -61,7 +61,7 @@ app.get('/', function (req, res) {
 
 app.use(express.json());
 
-app.post('/execute-function', (req, res) => {
+app.post('/createBlock', (req, res) => {
 
     // input parameter not empty
     if (req.body.x != "" && req.body.y != "" && req.body.z != "") {
@@ -78,5 +78,95 @@ app.post('/execute-function', (req, res) => {
     }
 
 });  
+
+app.post('/createCone', (req, res) => {
+
+    // input parameter not empty
+    if (req.body.radius != "" && req.body.height != "" && req.body.semiAngle != "") {
+        client.createCone({ radius: req.body.radius, height: req.body.height, semiAngle: req.body.semiAngle }, function (err, response) {
+            if (err) {
+                console.error('Error: ', err)
+            } else {
+                res.json({ mesh_data: response.faceVertices });
+            }
+        })
+    }
+    else {
+        console.log("input empty");
+    }
+
+});  
+
+app.post('/createSphere', (req, res) => {
+
+    // input parameter not empty
+    if (req.body.radius != "") {
+        client.createSphere({ radius: req.body.radius}, function (err, response) {
+            if (err) {
+                console.error('Error: ', err)
+            } else {
+                res.json({ mesh_data: response.faceVertices });
+            }
+        })
+    }
+    else {
+        console.log("input empty");
+    }
+
+});
+
+app.post('/createCylinder', (req, res) => {
+
+    // input parameter not empty
+    if (req.body.radius != "" && req.body.height != "") {
+        client.createCylinder({ radius: req.body.radius, height: req.body.height}, function (err, response) {
+            if (err) {
+                console.error('Error: ', err)
+            } else {
+                res.json({ mesh_data: response.faceVertices });
+            }
+        })
+    }
+    else {
+        console.log("input empty");
+    }
+
+});
+
+app.post('/createTorus', (req, res) => {
+
+    // input parameter not empty
+    if (req.body.majorRadius != "" && req.body.minorRadius != "") {
+        client.createTorus({ major_radius: req.body.majorRadius, minor_radius: req.body.minorRadius}, function (err, response) {
+            if (err) {
+                console.error('Error: ', err)
+            } else {
+                res.json({ mesh_data: response.faceVertices });
+            }
+        })
+    }
+    else {
+        console.log("input empty");
+    }
+
+});
+
+app.post('/createPrism', (req, res) => {
+
+    // input parameter not empty
+    if (req.body.radius != "" && req.body.height != "" && req.body.nSide != "") {
+        client.createPrism({ radius: req.body.radius, height: req.body.height, nSide: req.body.nSide }, function (err, response) {
+            if (err) {
+                console.error('Error: ', err)
+            } else {
+                res.json({ mesh_data: response.faceVertices });
+            }
+        })
+    }
+    else {
+        console.log("input empty");
+    }
+
+});
 
 app.listen(3000);

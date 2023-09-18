@@ -21,18 +21,38 @@
         <canvas id="glcanvas" width="1280" height="720"></canvas>
       </div>
 
-      <div class="transform-container">
+      <div class="modeling-container">
         <div class="button-row">
           <button id="createBlock">createBlcok</button>
-          <input type="number" name="block_x" id="block_x" placeholder="Enter x size">  
-          <input type="number" name="block_y" id="block_y" placeholder="Enter y size">  
-          <input type="number" name="block_z" id="block_z" placeholder="Enter z size">
-        </div><br>
+          <input type="number" name="block_x" id="block_x" placeholder="Enter x ">  
+          <input type="number" name="block_y" id="block_y" placeholder="Enter y ">  
+          <input type="number" name="block_z" id="block_z" placeholder="Enter z ">
+        </div>
+        <div class="button-row">
+          <button id="createCone">createCone</button>
+          <input type="number" name="cone_radius" id="cone_radius" placeholder="Enter radius ">  
+          <input type="number" name="cone_height" id="cone_height" placeholder="Enter height ">  
+          <input type="number" name="cone_semiAngle" id="cone_semiAngle" placeholder="Enter semiAngle ">
+        </div>
+        <div class="button-row">
+          <button id="createSphere">createSphere</button>
+          <input type="number" name="sphere_radius" id="sphere_radius" placeholder="Enter radius ">  
+        </div>
+        <div class="button-row">
+          <button id="createCylinder">createCylinder</button>
+          <input type="number" name="cylinder_radius" id="cylinder_radius" placeholder="Enter radius ">  
+          <input type="number" name="cylinder_height" id="cylinder_height" placeholder="Enter height ">  
+        </div>
+        <div class="button-row">
+          <button id="createTorus">createTorus</button>
+          <input type="number" name="torus_major_radius" id="torus_major_radius" placeholder="Enter major radius ">  
+          <input type="number" name="torus_minor_radius" id="torus_minor_radius" placeholder="Enter minor radius ">  
+        </div>
         <div class="button-row">
           <button id="createPrism">createPrism</button>
-          <input type="number" name="p_x" id="p_x" placeholder="Enter x size">  
-          <input type="number" name="p_y" id="p_y" placeholder="Enter y size">  
-          <input type="number" name="p_z" id="p_z" placeholder="Enter z size">
+          <input type="number" name="prism_radius" id="prism_radius" placeholder="Enter radius ">  
+          <input type="number" name="prism_height" id="prism_height" placeholder="Enter height ">  
+          <input type="number" name="prism_nside" id="prism_nside" placeholder="Enter nSide ">
         </div>
       </div>          
     </div>

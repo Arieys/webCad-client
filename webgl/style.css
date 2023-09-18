@@ -27,59 +27,28 @@ h1 {
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 20px;
-  background-color: #fff;
+  background-color: #000;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
 }
-
-select {
-  font-size: 16px;
-  padding: 8px;
-  border: 1px solid #55515b;
-  border-radius: 4px;
-}
-
-.select-label {
-  font-family: "Microsoft YaHei";
-  font-size: 16px;
-  font-weight: bold;
-}
-
 canvas {
   width: 100%;
   height: auto;
 }
 
-.transform-container {
+.modeling-container {
   display: block;
   flex-direction: row;
 }
 
-.transform-row {
-  font-family: '楷体';
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.transform-row label {
-  margin-right: 10px;
-  width: 60px;
-}
-
-.transform-row input {
-  margin-right: 30px;
-}
-
 .button-row {
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     margin-left: 30px;
-    justify-content: space-between;
+    justify-content: left;
 }
 
 button + button {
@@ -94,6 +63,7 @@ button {
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
+  width : 160px;
 }
 
 button:hover {
