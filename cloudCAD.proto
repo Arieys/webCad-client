@@ -19,9 +19,9 @@ syntax = "proto3";
 //option java_outer_classname = "HelloWorldProto";
 //option objc_class_prefix = "HLW";
 
-package helloworld;
+package CloudCAD;
 // The greeting service definition.
-service Greeter {
+service CADmodeling {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {}
 
@@ -31,6 +31,8 @@ service Greeter {
   rpc CreateCylinder(CreateCylinderRequest) returns (CreatePrimitiveReply){}
   rpc CreateTorus(CreateTorusRequest) returns (CreatePrimitiveReply){}
   rpc CreatePrism(CreatePrismRequest) returns (CreatePrimitiveReply){}
+
+  rpc QueryScene(QuerySceneRequest) returns (QuerySceneReply){}
 }
 
 // The request message containing the user's name.
@@ -75,7 +77,20 @@ message CreatePrismRequest{
 	int32 nSide = 3;
 }
 
-message CreatePrimitiveReply{
+message ModelData{
 	repeated double faceVertices = 1;
 	repeated double lineStrip = 2;
+}
+
+message CreatePrimitiveReply{
+	int32 tag = 1;
+}
+
+message QuerySceneRequest{
+	int32 status = 1;
+}
+
+message QuerySceneReply{
+	repeated ModelData models = 1;
+	int32 status = 2;
 }

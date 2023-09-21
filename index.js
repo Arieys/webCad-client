@@ -6,7 +6,7 @@ const path = require('path');
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 
-const PROTO_PATH = path.join(__dirname, 'helloworld.proto');
+const PROTO_PATH = path.join(__dirname, 'cloudCAD.proto');
 const packageDefinition = protoLoader.loadSync(
   PROTO_PATH,
   {
@@ -19,14 +19,16 @@ const packageDefinition = protoLoader.loadSync(
 );
 const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 
-const hello_proto = protoDescriptor.helloworld;
-const ModelService = hello_proto.Greeter;
+const cad_proto = protoDescriptor.CloudCAD;
+const ModelService = cad_proto.CADmodeling;
 
 // 创建客户端
 const client = new ModelService('localhost:50052', grpc.credentials.createInsecure());
 // 构造请求消息
-var obj_files;
+var clientStatus = 0;
 // 调用服务
+
+var models;
 
 client.sayHello({ name: 'Hello ys' }, function (err, response) {
     if (err) {
@@ -36,18 +38,12 @@ client.sayHello({ name: 'Hello ys' }, function (err, response) {
     }
 })
 
-let position_data = [1.0,1.0,1.0];
-let normal_data = [];
-
 app.use(express.static('webgl', { 'extensions': ['js', 'css'] }));
 
 // 在模板中动态传递参数
 app.get('/', function (req, res) {
-  console.log("111");
+  console.log("start loading website");
   const params = {
-    position_data: JSON.stringify(position_data),
-    normal_data: JSON.stringify(normal_data),
-    obj_files: JSON.stringify(obj_files)
   };
   ejs.renderFile('index.ejs', params, function (err, str) {
     if (err) {
@@ -69,7 +65,7 @@ app.post('/createBlock', (req, res) => {
             if (err) {
                 console.error('Error: ', err)
             } else {
-                res.json({ mesh_data: response.faceVertices });
+                console.log("create block success")
             }
         })
     }
@@ -87,7 +83,7 @@ app.post('/createCone', (req, res) => {
             if (err) {
                 console.error('Error: ', err)
             } else {
-                res.json({ mesh_data: response.faceVertices });
+                console.log("create cone success")
             }
         })
     }
@@ -105,7 +101,7 @@ app.post('/createSphere', (req, res) => {
             if (err) {
                 console.error('Error: ', err)
             } else {
-                res.json({ mesh_data: response.faceVertices });
+                console.log("create sphere success")
             }
         })
     }
@@ -123,7 +119,7 @@ app.post('/createCylinder', (req, res) => {
             if (err) {
                 console.error('Error: ', err)
             } else {
-                res.json({ mesh_data: response.faceVertices });
+                console.log("create cylinder success")
             }
         })
     }
@@ -141,7 +137,7 @@ app.post('/createTorus', (req, res) => {
             if (err) {
                 console.error('Error: ', err)
             } else {
-                res.json({ mesh_data: response.faceVertices });
+                console.log("create torus success")
             }
         })
     }
@@ -159,7 +155,7 @@ app.post('/createPrism', (req, res) => {
             if (err) {
                 console.error('Error: ', err)
             } else {
-                res.json({ mesh_data: response.faceVertices });
+                console.log("create prism success")
             }
         })
     }
@@ -168,5 +164,31 @@ app.post('/createPrism', (req, res) => {
     }
 
 });
+
+app.post('/queryScene', (req, res) => {
+
+    // input parameter not empty
+
+    client.queryScene({ status: req.body.clientStatus }, function (err, response) {
+        if (err) {
+            console.error('Error: ', err)
+        } else {
+            console.log("Server status : ", response.status, "Client Status : ", req.body.clientStatus);
+            if (response.status > req.body.clientStatus) {
+                console.log(response.models);
+                models = response.models;
+                res.json({ models: models, status: response.status });
+            }
+            else {
+                res.json({ models: "", status: response.status });
+            }
+            
+        }
+    })
+
+
+});
+
+console.log("init ok");
 
 app.listen(3000);

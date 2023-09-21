@@ -1,5 +1,3 @@
-import { parseData } from "./parseData.js";
-import { setNormalData, setPositionData } from "./dataBuffer.js";
 function onClickCreateBlcok() {
 
     console.log("on createBlock btn click");

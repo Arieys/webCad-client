@@ -1,11 +1,12 @@
-export let positionData = [], normalData = [];
+export let models = [];
 
-function setPositionData(data) {
-    positionData = data;
+//model {
+//    positionData : xxx, 
+//    normalData : xxx
+//}
+
+function addModel(model) {
+    models.push(model);
 }
 
-function setNormalData(data) {
-    normalData = data;
-}
-
-export {setPositionData, setNormalData}
+export { addModel }

@@ -3,7 +3,8 @@ import { drawObject } from "./drawObject.js";
 import { initSimpleMVP } from "./initMVP.js";
 import { createCamera, getViewMatrix, processMouseMovement } from "./camera.js";
 import * as ui from "./ui.js";
-import { positionData, normalData } from "./dataBuffer.js"
+import { addModel, models } from "./dataBuffer.js";
+import { parseData } from "./parseData.js";
 
 let deltaTime = 0;
 let MVP = {
@@ -52,9 +53,50 @@ const fsSource = `
     }
   `;
 
+let clientStatus = 0;
+function pollData() {
+    console.log("pollData")
+    const data = {
+        clientStatus: clientStatus
+    };
+    // 发送请求到后端的路由  
+    fetch('/queryScene', {
+        method: 'POST', // 或者使用 GET 方法  
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.models == "") {
+                console.log("data empty");
+            }
+            else {
+                console.log(data.models.length)
+                for (var i = 0; i < data.models.length; i++) {
+                    const parsedData = parseData(data.models[i].faceVertices);
+                    addModel(parsedData);
+                }
+                console.log("setDataSuccessfully, status = ", data.status);
+                clientStatus = data.status
+            }
+            setTimeout(pollData, 1000); // 1秒后再次执行轮询  
+        })
+        .catch(error => {
+            console.error(error)
+            // 处理错误  
+            // ...  
+        });
+
+}
+
+
 main();
 
 function main() {
+    pollData();  
+
     const canvas = document.querySelector("#glcanvas");
     const gl = canvas.getContext("webgl");
 
@@ -169,6 +211,7 @@ function main() {
 
     let then = 0;
 
+
     function render(now) {
         gl.clearColor(0.0, 0.0, 0.0, 1.0); // Clear to black, fully opaque
         gl.clearDepth(1.0); // Clear everything
@@ -181,13 +224,15 @@ function main() {
         deltaTime = now - then;
         then = now;
 
-        const Buffers = {
-            positionBuffer: initPositionBuffer(gl, positionData),
-            normalBuffer: initNormalBuffer(gl, normalData),
-        }
-        const vertexCount = positionData.length / 3;
+        for (var i = 0; i < models.length; i++) {
+            const Buffers = {
+                positionBuffer: initPositionBuffer(gl, models[i].positionData),
+                normalBuffer: initNormalBuffer(gl, models[i].normalData),
+            }
+            const vertexCount = models[i].positionData.length / 3;
 
-        drawObject(gl, locationInfo, Buffers, vertexCount, MVP, camera.position);
+            drawObject(gl, locationInfo, Buffers, vertexCount, MVP, camera.position);
+        }
 
         requestAnimationFrame(render);
     }
